@@ -1,0 +1,144 @@
+{% extends 'main_page/base.html' %}
+{% load  static %}
+
+{% block css %}
+    <link href= {% static 'styles.css' %} rel="stylesheet">
+{% endblock css %}
+
+
+{% block name_app %}
+    <a class="navbar-brand flex-grow-1" href="{% url 'zayavki:zayavki_list' %}"> > Заявки на уценку</a>
+{% endblock name_app %}
+
+
+
+{% block content %}
+    <div > 
+        {% comment %} Кнопка СОЗДАТЬ НОВУЮ ЗАЯВКУ {% endcomment %}
+        <div class="row justify-content-end">
+            <div class="col my-2 text-end">
+                <a class="btn btn-success text-nowrap" href="{% url 'zayavki:zayavka-create' %}">Создать новую заявку</a> 
+            </div>               
+        </div>
+      
+        {% comment %} БЛОК ФИЛЬТРОВ {% endcomment %}
+        <div class="select_filter">
+            {% for one_filter in filters %}
+                <div>
+                    <a 
+                      {% if one_filter.link != cur_filter %} class="btn btn-outline-primary btn-sm text-nowrap" {% else %} class="btn btn-primary btn-sm text-nowrap" {% endif %} 
+                      href="{% url 'zayavki:zayavki_filter_list' one_filter.link %}" 
+                      role="button">
+                      {{ one_filter.label }} {{ one_filter.count }}
+                    </a>
+                </div>    
+            {% endfor %}            
+        </div>
+        
+        {% comment %} ТАБЛИЦА ЗАЯВОК {% endcomment %}
+        <div class="table-responsive">
+        <table class="table table-hover table-bordered table-sm my_table  ">
+            <thead>
+                <tr class="">                
+                    <th class="col-1">Дата</th>
+                    <th class="col-1">Номер заявки</th>
+                    <th class="col-1">Магазин</th>
+                    <th class="col-1">Код товара</th>
+                    <th class="col-2" >Номенклатура</th>
+                    <th class="col-3">Товарный вид</th>
+                    <th class="col-3">Пояснения</th>
+                    <th class="col">Решение</th>
+                    <th class="col">Уценка в 1С</th>
+                    <th class="col">Уценка на витрине</th>
+                </tr>
+            </thead>              
+            <tbody>    
+            {%for zayavka in zayavki%}
+                <tr>                   
+                    <td>{{zayavka.data|date:"d.m.Y"}}</td>
+                    <td>{{zayavka.id}}</td>
+                    <td>{{zayavka.user.shop}}</td>
+                    <td>{{zayavka.code}}</td>
+                    <td>
+                        <a href="{% url 'zayavki:zayavka-detail' zayavka.id%}"> {{zayavka}} </a>
+                    </td>
+                    <td>{{zayavka.description}}
+                        {% if zayavka.foto1 %}
+                            <a href="/media/{{zayavka.foto1}}"  target="_blank" class="text-decoration-none">
+                                <i class="fa fa-file-image-o fa-lg" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
+                        {% if zayavka.foto2 %}
+                            <a href="/media/{{zayavka.foto2}}"  target="_blank" class="text-decoration-none">
+                                <i class="fa fa-file-image-o fa-lg" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}                    
+                    </td>
+                    <td>{{zayavka.clarification}} 
+                        {% if zayavka.get_count_comments > 0 %}
+                        <a href="{% url 'zayavki:zayavka-detail' zayavka.id %}" class="text-decoration-none">
+                           <i class="fa fa-comment-o" aria-hidden="true"></i> {{ zayavka.get_count_comments }}
+                        </a> 
+                        {% endif %}                       
+                    </td>
+                    <td>{% if zayavka.status1 %}
+                            <i class="fa fa-check" style="color:green" aria-hidden="true"></i>
+                        {% elif zayavka.status2 %}
+                            <i class="fa fa-times" style="color:red" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-hourglass-half" style="color:gray" aria-hidden="true"></i>
+                        {% endif %}    
+                    </td>
+                    <td>{% if zayavka.status1 and zayavka.status3 %}
+                            <i class="fa fa-check"  style="color:green" aria-hidden="true"></i>
+                        {% elif  zayavka.status1 and not zayavka.status3%}
+                            <i class="fa fa-hourglass-half"  style="color:gray" aria-hidden="true"></i>
+                        {% endif %} 
+                            
+                    </td>
+                    <td>{% if zayavka.status3 and zayavka.status4 %}
+                            <i class="fa fa-check" style="color:green" aria-hidden="true"></i>
+                        {% elif zayavka.status3 and not zayavka.status4%}
+                            <i class="fa fa-hourglass-half" style="color:gray" aria-hidden="true"></i>
+                        {% endif %} 
+                    </td>
+                </tr>
+            {%endfor%}
+        </tbody>    
+        </table>
+        </div>
+       
+        {% if paginator.num_pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-2">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+                <a class="page-link" 
+                    href="{% if page_obj.has_previous %} {% url 'zayavki:zayavki_filter_list' cur_filter %}?page={{page_obj.previous_page_number}} {% else %}#{% endif %}" 
+                    tabindex="-1">Предыдущая</a>
+                </li>
+                
+                {% for p in paginator.page_range %}                    
+                    <li class="page-item {% if page_obj.number == p %} active{% endif %}">
+                        <a class="page-link" 
+                            href="{% url 'zayavki:zayavki_filter_list' cur_filter %}?page={{p}}">
+                            {{p}}
+                        </a>
+                    </li>
+                {% endfor %}
+                
+                <li class="page-item {% if not page_obj.has_next %} disabled  {% endif %}">
+                <a class="page-link" 
+                    href="{% if page_obj.has_next %} {% url 'zayavki:zayavki_filter_list' cur_filter%}?page={{page_obj.next_page_number}} {% else %}#{% endif %}">
+                    Следующая
+                </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+
+        {% include "zayavki/notifications.html" %}
+       
+    </div>
+{% endblock content %}
+
+

@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+/* body {
+    display: flex;
+    padding-top: 56px;
+} */
+
+.select_filter {
+    display:flex;
+    flex-wrap: wrap;
+    text-decoration: none;
+    gap:10px;
+    margin-bottom: 10px;
+    
+ } 
+
+.my_table {
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 14px;
+    line-height: 1;
+    vertical-align: middle;
+    text-align: center;
+} 
+
+.add_zayavka {
+    padding-top: 56px;
+}
+
+
+
+/* .container {
+    max-width: 760px;
+    margin: auto;
+} */
+/* 
+table {
+    width: 100%;
+
+    border-style: solid;
+    border-collapse: collapse;
+    /*убираем пустые промежутки между ячейками
+    border: 1px solid grey;
+    /*устанавливаем для таблицы внешнюю границу серого цвета толщиной 1px
+    
+}
+/*  
+th, td {
+    border: 1px solid grey;
+    text-align: center;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 14px;
+ }
+
+
+
+.image {
+     background-color: none;
+ }
+ */
