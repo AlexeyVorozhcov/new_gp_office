@@ -32,16 +32,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'crispy_forms',
+    'django.contrib.staticfiles',    
+    # 'crispy_forms',
     'allauth',
     'allauth.account',
+    "allauth.socialaccount",
     'main',
     'users',
 ]
@@ -76,10 +77,13 @@ TEMPLATES = [
 
 # https://django-allauth.readthedocs.io/en/latest/installation.html
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend']
 
 SITE_ID = 2
+ACCOUNT_EMAIL_VERIFICATION = "none"
+LOGIN_REDIRECT_URL = "home"
+ACCOUNT_LOGOUT_ON_GET = True
 
 WSGI_APPLICATION = 'GP_OFFICE.wsgi.application'
 
@@ -144,5 +148,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django-crispy-forms
 # https://django-crispy-forms.readthedocs.io/en/latest/install.html#installing-django-crispy-forms
-CRISPY_TEMPLATE_PACK = 'uni_form'
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # end django-crispy-forms
