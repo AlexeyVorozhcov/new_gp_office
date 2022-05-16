@@ -54,6 +54,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">Зарегистрироваться <i class="fas fa-user-plus"></i></a>
+                    </li>
                 {% endif %} 
             </ul>           
         </div>
@@ -62,7 +65,7 @@
 </nav>
 
 <div class="container">
-    <div class="row text-center justify-content-center">
+    <div class="row justify-content-center">
          {% block content %} {% endblock content %}
     </div>
 </div>
