@@ -1,0 +1,80 @@
+{% load static %}
+{% comment %} {% load crispy_forms_tags %} {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title> {{ title }}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href= {% static 'bootstrap-5/css/bootstrap.min.css' %}  rel="stylesheet">
+    <!-- Custom styles for this template -->
+    {% block css %}{% endblock css %}
+
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand " 
+           href="{% url 'home' %}">
+           Gamepark Office
+        </a>
+        {% block name_app %}{% endblock name_app %}
+        
+        <button class="navbar-toggler me-auto" 
+                type="button"
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarContent" 
+                aria-controls="navbarContent" 
+                aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarContent">
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="">{{user.username }} <i class="fas fa-user-circle"></i></a>
+                </li>
+                    {% if user.shop %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="">{{user.shop }} <i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                        </li>
+                    {% endif %}    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Выйти <i class="fas fa-sign-out-alt"></i></a>    
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>
+                    </li>
+                {% endif %} 
+            </ul>           
+        </div>
+        
+    </div>   
+</nav>
+
+<div class="container">
+    <div class="row text-center justify-content-center">
+         {% block content %} {% endblock content %}
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Bootstrap core JavaScript -->
+<script src={% static 'bootstrap-5/js/bootstrap.bundle.min.js' %} ></script>
+<!-- FontAwesome script -->
+<script src={% static 'fontawesome/fontawesome-icons.js' %} crossorigin="anonymous"></script>
+</body>
+</html>
